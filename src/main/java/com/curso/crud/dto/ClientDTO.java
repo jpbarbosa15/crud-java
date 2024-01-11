@@ -5,7 +5,7 @@ import com.curso.crud.entities.Client;
 import java.time.LocalDate;
 
 public class ClientDTO {
-    private long id;
+    private Long id;
     private String name;
     private String cpf;
     private double income;
@@ -45,11 +45,11 @@ public class ClientDTO {
         return children;
     }
     public ClientDTO(Client client){
-        this.id = client.getId();
-        this.name = client.getName();
-        this.cpf = client.getCpf();
-        this.income = client.getIncome();
-        this.birthDate = client.getBirthDate();
-        this.children = client.getChildren();
+        id = client.getId();
+        name = client.getName();
+        cpf = client.getCpf();
+        income = client.getIncome();
+        birthDate = client.getBirthDate();
+        children = client.getChildren();
     }
 }
