@@ -3,13 +3,14 @@ package com.curso.crud.service;
 import com.curso.crud.dto.ClientDTO;
 import com.curso.crud.entities.Client;
 import com.curso.crud.repositories.ClientRepository;
+import com.curso.crud.service.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -17,10 +18,8 @@ public class ClienteService {
     private ClientRepository repository;
     @Transactional(readOnly = true)
     public ClientDTO findById (Long id){
-        Optional<Client> result = repository.findById(id);
-        Client client = result.get();
-        ClientDTO dto = new ClientDTO(client);
-        return dto;
+        Client client = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+        return new ClientDTO(client);
     }
     @Transactional(readOnly = true)
     public Page<ClientDTO> findAll (Pageable pageable){
@@ -36,17 +35,24 @@ public class ClienteService {
         return clientDTO;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
         repository.deleteById(id);
     }
 
     @Transactional
     public ClientDTO update(Long id,ClientDTO dto){
-        Client client = repository.getReferenceById(id);
-        copyDtoToEntity(dto,client);
-        client = repository.save(client);
-        return new ClientDTO(client);
+        try {
+            Client client = repository.getReferenceById(id);
+            copyDtoToEntity(dto,client);
+            client = repository.save(client);
+            return new ClientDTO(client);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException ("Recurso nao encontrado");
+        }
     }
 
 
