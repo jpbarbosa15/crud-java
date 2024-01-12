@@ -52,5 +52,23 @@ public class Client {
         return children;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setChildren(Integer children) {
+        this.children = children;
+    }
 }
