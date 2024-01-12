@@ -32,7 +32,7 @@ public class ClienteService {
         Client client = new Client();
         copyDtoToEntity(clientDTO,client);
         client = repository.save(client);
-        return clientDTO;
+        return new ClientDTO(client);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

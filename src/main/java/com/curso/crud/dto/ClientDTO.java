@@ -1,14 +1,18 @@
 package com.curso.crud.dto;
 
 import com.curso.crud.entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
     private Long id;
+    @NotBlank(message = "Campo requirido")
     private String name;
     private String cpf;
     private double income;
+    @PastOrPresent(message = "A data de nascimento nao pode ser futura")
     private LocalDate birthDate;
     private Integer children;
 
